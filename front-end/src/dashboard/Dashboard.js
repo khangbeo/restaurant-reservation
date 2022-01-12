@@ -6,7 +6,7 @@ import useQuery from "../utils/useQuery";
 import { previous, next, today } from "../utils/date-time"
 import { useHistory } from "react-router";
 import Reservations from "../reservations/Reservations";
-import Table from "../tables/Table";
+import TableList from "../tables/TableList";
 
 /**
  * Defines the dashboard page.
@@ -100,18 +100,7 @@ function Dashboard() {
 
       <ErrorAlert error={error} />
       <Reservations reservations={reservations} />
-      <div className="container">
-        {tables && (
-          <div>
-            {tables.map(table => (
-              <Table
-                table={table}
-                loadDashboard={loadDashboard}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <TableList tables={tables} />
 
     </main>
   );

@@ -23,8 +23,7 @@ function read(reservation_id) {
 
 function create(reservation) {
     return knex('reservations')
-        .insert(reservation)
-        .returning('*')
+        .insert(reservation, '*')
         .then((createdRecords) => createdRecords[0])
 }
 
@@ -44,11 +43,27 @@ function search(mobile_number) {
         .orderBy("reservation_date");
 }
 
+function destroy(reservation_id) {
+    return knex('reservations')
+        .select('*')
+        .where({ reservation_id })
+        .del()
+}
+
+function update(updatedRes) {
+    return knex('reservations')
+        .select('*')
+        .where({ reservation_id: updatedRes.reservation_id })
+        .update(updatedRes, '*')
+        .then(res => res[0])
+}
 module.exports = {
     list,
     listByDate,
     read,
     create,
     updateStatus,
-    search
+    search,
+    destroy,
+    update
 }

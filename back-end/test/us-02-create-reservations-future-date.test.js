@@ -25,7 +25,7 @@ describe("US-02 - Create reservations future date", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "1999-01-01",
+        reservation_date: "1999-01-01", // should be 5, but the test shows 6
         reservation_time: "17:30",
         people: 3,
       };

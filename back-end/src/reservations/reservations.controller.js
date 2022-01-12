@@ -1,11 +1,6 @@
-const dayjs = require('dayjs')
-const utc = require('dayjs/plugin/utc')
-dayjs.extend(utc)
-
 const service = require('./reservations.service')
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary')
 const hasProperties = require('../errors/hasProperties')
-const { update } = require('../db/connection')
 const hasRequiredProperties = hasProperties(
   'first_name',
   'last_name',
@@ -64,7 +59,6 @@ async function read(req, res) {
 
 async function create(req, res) {
   const data = await service.create(req.body.data)
-  console.log(data)
   res.status(201).json({ data })
 }
 
@@ -73,6 +67,22 @@ async function updateStatus(req, res) {
   const { status } = req.body.data
   const data = await service.updateStatus(reservation_id, status)
   res.json({ data })
+}
+
+async function update(req, res) {
+  const { reservation_id } = res.locals.reservation
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id,
+  }
+  const data = await service.update(updatedReservation)
+  res.json({ data })
+}
+
+async function destroy() {
+  const { reservation_id } = res.locals.reservation
+  await service.destroy(reservation_id)
+  res.sendStatus(204)
 }
 
 function hasData(req, res, next) {
@@ -98,11 +108,11 @@ function hasValidPeople(req, res, next) {
 }
 
 function hasValidDate(req, res, next) {
-  const { data: { reservation_date } } = req.body
-  const dateInput = dayjs(reservation_date)
-  const dateInputUTC = dateInput.utc()
-  const today = dayjs()
-  const dateFormat = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
+  const { data: { reservation_date, reservation_time } } = req.body
+  const dateInput = new Date(`${reservation_date} ${reservation_time}`)
+  const dateInputUTC = dateInput.getUTCDay()
+  const today = new Date()
+  const dateFormat = /\d\d\d\d-\d\d-\d\d/
   if (!reservation_date) {
     return next({
       status: 400,
@@ -115,7 +125,7 @@ function hasValidDate(req, res, next) {
       message: `reservation_date is invalid`
     })
   }
-  if (dateInputUTC === 2) {
+  if (dateInputUTC - 1 === 2) {
     return next({
       status: 400,
       message: `Restaurant is closed on Tuesday.`
@@ -129,7 +139,6 @@ function hasValidDate(req, res, next) {
   }
   next()
 }
-
 function hasValidTime(req, res, next) {
   const { data: { reservation_time } } = req.body
   const timeFormat = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/
@@ -162,7 +171,7 @@ function hasValidTime(req, res, next) {
 
 function hasValidStatus(req, res, next) {
   const { status } = req.body.data
-  const statuses = ['booked', 'seated', 'finished']
+  const statuses = ['booked', 'seated', 'finished', 'cancelled']
   if (statuses.includes(status)) {
     return next()
   }
@@ -231,5 +240,18 @@ module.exports = {
     hasValidStatus,
     checkFinish,
     asyncErrorBoundary(updateStatus)
+  ],
+  delete: [
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(destroy)
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasRequiredProperties,
+    checkBookedStatus,
+    hasValidDate,
+    hasValidTime,
+    hasValidPeople,
+    asyncErrorBoundary(update)
   ]
 };

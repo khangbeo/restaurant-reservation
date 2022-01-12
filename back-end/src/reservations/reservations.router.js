@@ -10,6 +10,8 @@ router
 router
     .route('/:reservationId')
     .get(controller.read)
+    .put(controller.update)
+    .delete(controller.delete)
     .all(methodNotAllowed)
 
 router
@@ -17,9 +19,5 @@ router
     .get(controller.list)
     .post(controller.create)
     .all(methodNotAllowed)
-
-
-
-
 
 module.exports = router;

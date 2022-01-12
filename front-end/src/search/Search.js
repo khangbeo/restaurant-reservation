@@ -45,11 +45,10 @@ export default function Search() {
                     Find
                 </button>
             </form>
-            {reservations.length > 0 && (
+            {reservations.length > 0 ? (
                 <Reservations reservations={reservations} />
-            )}
-            {found && reservations.length === 0 ? (
-                <p>No reservations</p>
+            ) : found && reservations.length === 0 ? (
+                <p>No reservations found</p>
             ) : ('')}
         </div>
     )

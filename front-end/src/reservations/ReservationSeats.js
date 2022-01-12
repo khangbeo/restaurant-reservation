@@ -8,18 +8,21 @@ export default function ReservationSeats() {
     const [selectOptions, setSelectOptions] = useState('')
     const [error, setError] = useState(null)
     const { reservationId } = useParams()
-    console.log(reservationId)
     const history = useHistory()
-    useEffect(loadTables, [])
-
-    function loadTables() {
+    useEffect(() => {
         const abortController = new AbortController();
         setError(null);
-        listTables(abortController.signal)
-            .then(setTables)
-            .catch(setError);
+        async function loadTables() {
+            try {
+                const response = await listTables(abortController.signal)
+                setTables(response)
+            } catch (error) {
+                setError(error)
+            }
+        }
+        loadTables()
         return () => abortController.abort();
-    }
+    }, [])
 
     function changeHandler({ target }) {
         setSelectOptions({ [target.name]: target.value })
@@ -36,8 +39,8 @@ export default function ReservationSeats() {
     }
     return (
         <div>
-            <h1>Seat Reservation</h1>
             <ErrorAlert error={error} />
+            <h1>Seat Reservation</h1>
 
             <form onSubmit={handleSubmit}>
                 <h2>Table name - Table capacity</h2>
@@ -53,8 +56,8 @@ export default function ReservationSeats() {
                         </select>
                     </div>
                 )}
-                <button onClick={history.goBack}>Cancel</button>
                 <button type='submit'>Submit</button>
+                <button onClick={history.goBack}>Cancel</button>
             </form>
         </div>
     )
