@@ -7,6 +7,7 @@ import { previous, next, today } from "../utils/date-time"
 import { useHistory } from "react-router";
 import Reservations from "../reservations/Reservations";
 import TableList from "../tables/TableList";
+const dayjs = require('dayjs')
 
 /**
  * Defines the dashboard page.
@@ -55,41 +56,43 @@ function Dashboard() {
     setDate(next(date))
     history.push(`dashboard?date=${next(date)}`)
   }
+
   return (
     <main>
-      <div className="dashboard-header text-center">
-        <h1>Dashboard</h1>
-        <div className="d-md-flex mb-3 flex-column align-items-center">
-          <h4 className="mb-0">Reservations for date</h4>
-
-          <div>
-            <label htmlFor="reservation_date" className="form-label mt-3 mr-2">
-              Search for a date:
-            </label>
-            <input
-              type="date"
-              pattern="\d{4}-\d{2}-\d{2}"
-              name="reservation_date"
-              onChange={handleDateChange}
-              value={date}
-            />
-          </div>
-
-          <div className="buttons">
+      <div className="dashboard-header text-center px-4 py-4">
+        <h1 className="font-bold text-teal-700 text-6xl mx-2 pb-14">Dashboard</h1>
+        <div>
+          <label htmlFor="reservation_date" className="text-xl mx-2">
+            Choose date:
+          </label>
+          <input
+            className="text-xl border-2 border-teal-500 rounded-3xl px-2"
+            type="date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            name="reservation_date"
+            onChange={handleDateChange}
+            value={date}
+          />
+        </div>
+        <div className="text-teal-700">
+          <h4 className="text-xl py-2">Reservations for {dayjs(date).format('YYYY-MM-DD')}</h4>
+        </div>
+        <div className="container">
+          <div className="text-white py-2">
             <button
-              className="btn btn-primary mb-4 mr-3"
+              className="focus:outline-none bg-blue-500 hover:bg-teal-700 bg-teal-500 font-bold text-lg py-2 px-4 rounded-3xl"
               onClick={() => handlePreviousDate(date)}
             >
               Previous
             </button>
             <button
-              className="btn btn-primary mb-4 mr-3"
+              className="focus:outline-none bg-blue-500 hover:bg-teal-700 bg-teal-500 font-bold text-lg py-2 px-4 mx-4 rounded-3xl"
               onClick={() => setDate(today())}
             >
               Today
             </button>
             <button
-              className="btn btn-primary mb-4 mr-3"
+              className="focus:outline-none bg-blue-500 hover:bg-teal-700 bg-teal-500 font-bold text-lg py-2 px-4 rounded-3xl"
               onClick={() => handleNextDate(date)}
             >
               Next
@@ -100,6 +103,7 @@ function Dashboard() {
 
       <ErrorAlert error={error} />
       <Reservations reservations={reservations} />
+      <h2 className="text-center my-3">Tables</h2>
       <TableList tables={tables} />
 
     </main>

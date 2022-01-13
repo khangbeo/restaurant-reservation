@@ -3,14 +3,14 @@ import Table from './Table'
 
 export default function TableList({ tables }) {
     return (
-        <div className="container">
+        <>
             {tables && (
-                <div>
+                <div className='container d-flex justify-content-center'>
                     {tables.map((table, index) => (
                         <Table table={table} key={index} />
                     ))}
                 </div>
             )}
-        </div>
+        </>
     )
 }

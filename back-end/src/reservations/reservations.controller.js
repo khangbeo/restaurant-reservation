@@ -108,8 +108,8 @@ function hasValidPeople(req, res, next) {
 }
 
 function hasValidDate(req, res, next) {
-  const { data: { reservation_date, reservation_time } } = req.body
-  const dateInput = new Date(`${reservation_date} ${reservation_time}`)
+  const { data: { reservation_date } } = req.body
+  const dateInput = new Date(`${reservation_date}`)
   const dateInputUTC = dateInput.getUTCDay()
   const today = new Date()
   const dateFormat = /\d\d\d\d-\d\d-\d\d/
@@ -125,11 +125,14 @@ function hasValidDate(req, res, next) {
       message: `reservation_date is invalid`
     })
   }
-  if (dateInputUTC - 1 === 2) {
+  if (dateInputUTC === 2) {
     return next({
       status: 400,
-      message: `Restaurant is closed on Tuesday.`
+      message: `The restaurant is closed on Tuesday.`
     })
+  }
+  if (res.locals.reservation) {
+    return next()
   }
   if (dateInput < today) {
     return next({
