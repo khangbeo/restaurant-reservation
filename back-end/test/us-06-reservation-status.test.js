@@ -275,13 +275,12 @@ describe("US-06 - Reservation status", () => {
           `/reservations?date=${asDateString(reservationOne.reservation_date)}`
         )
         .set("Accept", "application/json");
-
+      
       expect(reservationsResponse.body.error).toBeUndefined();
 
       const finishedReservations = reservationsResponse.body.data.filter(
         (reservation) => reservation.status === "finished"
       );
-
       expect(finishedReservations).toHaveLength(0);
     });
   });
