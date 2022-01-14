@@ -9,6 +9,9 @@ const hasRequiredProperties = hasProperties(
   'reservation_time',
   'people',
 )
+const dayjs = require('dayjs')
+const utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 const VALID_PROPERTIES = [
   'first_name',
@@ -108,9 +111,10 @@ function hasValidPeople(req, res, next) {
 }
 
 function hasValidDate(req, res, next) {
-  const { data: { reservation_date } } = req.body
-  const dateInput = new Date(`${reservation_date}`)
-  const dateInputUTC = dateInput.getUTCDay()
+  const { data: { reservation_date, reservation_time } } = req.body
+  const dateInput = new Date(`${reservation_date} ${reservation_time}`)
+  let dayUTC = dayjs(dateInput)
+  dayUTC.local().format()
   const today = new Date()
   const dateFormat = /\d\d\d\d-\d\d-\d\d/
   if (!reservation_date) {
@@ -125,7 +129,7 @@ function hasValidDate(req, res, next) {
       message: `reservation_date is invalid`
     })
   }
-  if (dateInputUTC === 2) {
+  if (dayUTC.day() === 2) {
     return next({
       status: 400,
       message: `The restaurant is closed on Tuesday.`
@@ -157,7 +161,7 @@ function hasValidTime(req, res, next) {
       message: `reservation_time is invalid`
     })
   }
-  if (reservation_time <= "10:29:59") {
+  if (reservation_time <= "10:30:00") {
     return next({
       status: 400,
       message: `reservation_time can't be before 10:30 AM`

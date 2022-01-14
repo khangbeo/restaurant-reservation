@@ -59,14 +59,14 @@ function Dashboard() {
 
   return (
     <main>
-      <div className="dashboard-header text-center px-4 py-4">
-        <h1 className="font-bold text-teal-700 text-6xl mx-2 pb-14">Dashboard</h1>
+      <div>
+        <h1 >Dashboard</h1>
         <div>
-          <label htmlFor="reservation_date" className="text-xl mx-2">
+          <label htmlFor="reservation_date">
             Choose date:
           </label>
           <input
-            className="text-xl border-2 border-teal-500 rounded-3xl px-2"
+            className="px-2"
             type="date"
             pattern="\d{4}-\d{2}-\d{2}"
             name="reservation_date"
@@ -74,25 +74,25 @@ function Dashboard() {
             value={date}
           />
         </div>
-        <div className="text-teal-700">
-          <h4 className="text-xl py-2">Reservations for {dayjs(date).format('YYYY-MM-DD')}</h4>
+        <div>
+          <h4>Reservations for {dayjs(date).format('YYYY-MM-DD')}</h4>
         </div>
-        <div className="container">
-          <div className="text-white py-2">
+        <div>
+          <div>
             <button
-              className="focus:outline-none bg-blue-500 hover:bg-teal-700 bg-teal-500 font-bold text-lg py-2 px-4 rounded-3xl"
+              
               onClick={() => handlePreviousDate(date)}
             >
               Previous
             </button>
             <button
-              className="focus:outline-none bg-blue-500 hover:bg-teal-700 bg-teal-500 font-bold text-lg py-2 px-4 mx-4 rounded-3xl"
+             
               onClick={() => setDate(today())}
             >
               Today
             </button>
             <button
-              className="focus:outline-none bg-blue-500 hover:bg-teal-700 bg-teal-500 font-bold text-lg py-2 px-4 rounded-3xl"
+              
               onClick={() => handleNextDate(date)}
             >
               Next

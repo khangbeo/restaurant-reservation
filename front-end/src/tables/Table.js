@@ -22,19 +22,21 @@ export default function Table({ table, index }) {
 
     const foundRes = reservations.find(res => Number(table.reservation_id) === Number(res.reservation_id))
     return (
-        <div className='card mx-4 my-3'>
-            <div className='card-body' key={index}>
+        <div className='card bg-success w-50'>
+            <div className='card-body fw-bold text-center text-white m-4' key={index}>
                 <ErrorAlert error={error} />
-                <h2>Table Name: {table.table_name}</h2><hr />
-                <p>Capacity: {table.capacity}</p>
-                <p data-table-id-status={`${table.table_id}`}>Status: {table.reservation_id ? 'Occupied by ' : 'Free'}</p>
-                {foundRes && (
-                    <p>{foundRes.first_name} {foundRes.last_name}</p>
-                )}
-                {table.reservation_id && (
-                    <button type='submit' data-table-id-finish={`${table.table_id}`} onClick={() => handleFinish(table.table_id)}>Finish</button>
-                )
-                }
+                <div>
+                    <h2>Table Name: {table.table_name}</h2><hr />
+                    <p>Capacity: {table.capacity}</p>
+                    <p data-table-id-status={`${table.table_id}`}>Status: {table.reservation_id ? 'Occupied by ' : 'Free'}</p>
+                    {foundRes && (
+                        <p>{foundRes.first_name} {foundRes.last_name}</p>
+                    )}
+                    {table.reservation_id && (
+                        <button className="btn btn-dark mx-1 rounded-pill shadow-none" type='submit' data-table-id-finish={`${table.table_id}`} onClick={() => handleFinish(table.table_id)}>Finish</button>
+                    )
+                    }
+                </div>
             </div>
         </div>
     )
