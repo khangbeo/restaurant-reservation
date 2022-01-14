@@ -28,7 +28,6 @@ function Dashboard() {
 
   function loadTables() {
     const abortController = new AbortController();
-    setError(null);
     listTables(abortController.signal)
       .then(setTables)
       .catch(setError);
@@ -37,7 +36,6 @@ function Dashboard() {
 
   function loadDashboard() {
     const abortController = new AbortController();
-    setError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setError);
