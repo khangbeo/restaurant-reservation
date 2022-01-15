@@ -111,11 +111,17 @@ function hasValidPeople(req, res, next) {
 }
 
 function hasValidDate(req, res, next) {
-  const { data: { reservation_date, reservation_time } } = req.body
-  const dateInput = new Date(`${reservation_date} ${reservation_time}`)
-  let dayUTC = dayjs(dateInput)
-  dayUTC.local().format()
-  const today = dayjs()
+  const { data: { reservation_date, reservation_time } } = req.body // UTC
+  const trimmedDate = reservation_date.substring(0, 10)
+  const dateInput = new Date(`${trimmedDate} ${reservation_time}`) // UTC
+  const today = new Date()
+
+  const day = dayjs(dateInput).day()
+
+  console.log(dateInput)
+  console.log(today)
+  console.log(day)
+
   const dateFormat = /\d\d\d\d-\d\d-\d\d/
   if (!reservation_date) {
     return next({
@@ -123,13 +129,13 @@ function hasValidDate(req, res, next) {
       message: 'reservation_date is empty'
     })
   }
-  if (!reservation_date.match(dateFormat)) {
+  if (!trimmedDate.match(dateFormat)) {
     return next({
       status: 400,
       message: `reservation_date is invalid`
     })
   }
-  if (dayUTC.day() === 2) {
+  if (day === 2) {
     return next({
       status: 400,
       message: `The restaurant is closed on Tuesday.`

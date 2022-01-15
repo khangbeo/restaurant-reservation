@@ -119,7 +119,7 @@ function checkSeatedReservation(req, res, next) {
     if (status === 'seated') {
         return next({
             status: 400,
-            message: `The reservation you selected is already seated. `
+            message: `The reservation you selected is already seated.`
         })
     }
     next()
@@ -131,7 +131,7 @@ function checkTableCapacity(req, res, next) {
     if (people > capacity) {
         return next({
             status: 400,
-            message: `The table's capacity cannot hold this many people ${people}. Choose another table.`
+            message: `The table's capacity cannot hold this many people: ${people}. Choose another table.`
         })
     }
     next()

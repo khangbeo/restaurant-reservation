@@ -7,10 +7,7 @@ function list() {
 }
 
 function read(table_id) {
-    return knex('tables')
-        .select('*')
-        .where({ table_id }, undefined)
-        .first()
+    return knex("tables").select("*").where({ table_id }).first();
 }
 function create(table) {
     return knex('tables')

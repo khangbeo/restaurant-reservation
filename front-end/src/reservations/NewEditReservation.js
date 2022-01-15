@@ -21,7 +21,6 @@ export default function NewEditReservation() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        setError(null)
         const abortController = new AbortController()
         async function getData() {
             try {
@@ -81,6 +80,7 @@ export default function NewEditReservation() {
                 <h2>New Reservation</h2>
             )}
             <ErrorAlert error={error} />
+            
             <ReservationForm
                 handleSubmit={handleSubmit}
                 handleNumber={handleNumber}
