@@ -38,7 +38,7 @@ export default function NewTable() {
     }
 
     return (
-        <>
+        <div className="m-4">
             <h2>New Table</h2>
             <ErrorAlert error={error} />
             <form onSubmit={handleSubmit}>
@@ -72,10 +72,10 @@ export default function NewTable() {
                 <button type='submit' className="btn btn-primary mb-4 mr-3">
                     Submit
                 </button>
-                <button onClick={history.goBack} className="btn btn-warning mb-4">
+                <button onClick={history.goBack} className="btn btn-danger mb-4">
                     Cancel
                 </button>
             </form>
-        </>
+        </div>
     )
 }

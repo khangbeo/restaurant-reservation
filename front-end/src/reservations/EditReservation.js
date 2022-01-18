@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { createReservations, readReservation, updateReservation } from "../utils/api";
+import { readReservation, updateReservation } from "../utils/api";
 import { useParams, useHistory } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationForm from "./ReservationForm";
 const dayjs = require('dayjs')
 
-export default function NewEditReservation() {
+export default function EditReservation() {
     const initialFormState = {
         first_name: '',
         last_name: '',
@@ -14,12 +14,10 @@ export default function NewEditReservation() {
         reservation_time: '',
         people: '',
     }
-
     const { reservationId } = useParams()
     const history = useHistory()
-    const [formData, setFormData] = useState({ ...initialFormState })
     const [error, setError] = useState(null)
-
+    const [formData, setFormData] = useState({ ...initialFormState })
     useEffect(() => {
         const abortController = new AbortController()
         async function getData() {
@@ -57,15 +55,9 @@ export default function NewEditReservation() {
         event.preventDefault()
         const controller = new AbortController()
         try {
-            if (reservationId) {
-                await updateReservation(formData, controller.signal)
-                history.push(`/dashboard?date=${dayjs(formData.reservation_date).format('YYYY-MM-DD')}`)
-                setFormData({ ...initialFormState })
-            } else {
-                await createReservations(formData, controller.signal)
-                history.push(`/dashboard?date=${formData.reservation_date}`)
-                setFormData({ ...initialFormState })
-            }
+            const response = await updateReservation(formData, controller.signal)
+            history.push(`/dashboard?date=${dayjs(formData.reservation_date).format('YYYY-MM-DD')}`)
+            return response
         } catch (error) {
             setError(error)
         }
@@ -73,21 +65,15 @@ export default function NewEditReservation() {
     }
 
     return (
-        <div>
-            {reservationId ? (
-                <h2>Edit Reservation</h2>
-            ) : (
-                <h2>New Reservation</h2>
-            )}
+        <div className="m-4">
+            <h2>Edit Reservation</h2>
             <ErrorAlert error={error} />
-            
             <ReservationForm
                 handleSubmit={handleSubmit}
                 handleNumber={handleNumber}
                 handleChange={handleChange}
                 formData={formData}
                 history={history}
-                id={reservationId}
             />
         </div>
     )

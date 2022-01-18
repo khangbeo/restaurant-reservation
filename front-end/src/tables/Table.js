@@ -42,8 +42,8 @@ export default function Table({ table, index }) {
 
     const foundRes = reservations.find(res => Number(table.reservation_id) === Number(res.reservation_id))
     return (
-        <div className='card bg-success w-50'>
-            <div className='card-body fw-bold text-center text-white m-4' key={index}>
+        <div className='bg-success m-4 p-5 rounded'>
+            <div className='text-center text-white ' key={index}>
                 <ErrorAlert error={error} />
                 <div>
                     <h2>Table Name: {table.table_name}</h2><hr />

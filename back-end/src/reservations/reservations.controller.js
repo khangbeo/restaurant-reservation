@@ -118,10 +118,6 @@ function hasValidDate(req, res, next) {
 
   const day = dayjs(dateInput).day()
 
-  console.log(dateInput)
-  console.log(today)
-  console.log(day)
-
   const dateFormat = /\d\d\d\d-\d\d-\d\d/
   if (!reservation_date) {
     return next({

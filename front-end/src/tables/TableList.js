@@ -5,10 +5,14 @@ export default function TableList({ tables }) {
     return (
         <>
             {tables && (
-                <div>
-                    {tables.map((table, index) => (
-                        <Table table={table} key={index} />
-                    ))}
+                <div className='container'>
+                    <div className='row d-flex justify-content-center'>
+                        {tables.map((table) => (
+                            <div key={table.table_id} className='cols-xs-4'>
+                                <Table table={table} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
         </>

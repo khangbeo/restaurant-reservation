@@ -57,14 +57,14 @@ function Dashboard() {
 
   return (
     <main>
-      <div>
+      <div className="dashboard-header text-center px-4 py-4">
         <h1 >Dashboard</h1>
         <div>
-          <label htmlFor="reservation_date">
+          <label className="mx-2" htmlFor="reservation_date">
             Choose date:
           </label>
           <input
-            className="px-2"
+            className="px-2 rounded"
             type="date"
             pattern="\d{4}-\d{2}-\d{2}"
             name="reservation_date"
@@ -78,19 +78,19 @@ function Dashboard() {
         <div>
           <div>
             <button
-              
+              className="btn btn-dark mb-4 mr-3"
               onClick={() => handlePreviousDate(date)}
             >
               Previous
             </button>
             <button
-             
+              className="btn btn-dark mb-4 mr-3"
               onClick={() => setDate(today())}
             >
               Today
             </button>
             <button
-              
+              className="btn btn-dark mb-4 mr-3"
               onClick={() => handleNextDate(date)}
             >
               Next

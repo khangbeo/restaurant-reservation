@@ -38,7 +38,7 @@ export default function ReservationSeats() {
         return () => abortController.abort()
     }
     return (
-        <div>
+        <div className="text-center m-4">
             <ErrorAlert error={error} />
             <h1>Seat Reservation</h1>
 
@@ -46,7 +46,7 @@ export default function ReservationSeats() {
                 <h2>Table name - Table capacity</h2>
                 {tables && (
                     <div>
-                        <select name='table_id' required onChange={changeHandler}>
+                        <select className='rounded m-4' name='table_id' required onChange={changeHandler}>
                             <option value=''>Choose a Table</option>
                             {tables.map(table => (
                                 <option value={table.table_id} key={table.table_id}>
@@ -56,8 +56,8 @@ export default function ReservationSeats() {
                         </select>
                     </div>
                 )}
-                <button type='submit'>Submit</button>
-                <button onClick={history.goBack}>Cancel</button>
+                <button className="btn btn-primary mx-2" type='submit'>Submit</button>
+                <button className="btn btn-danger mx-2" onClick={history.goBack}>Cancel</button>
             </form>
         </div>
     )

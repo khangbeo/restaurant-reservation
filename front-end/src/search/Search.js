@@ -29,10 +29,10 @@ export default function Search() {
     }
 
     return (
-        <div>
+        <div className='m-4 mh-100'>
             <ErrorAlert error={error} />
-            <h2>Search By Phone Number</h2>
-            <form className='d-flex m-3' onSubmit={handleSubmit}>
+            <h2 className='text-center'>Search By Phone Number</h2>
+            <form className='d-flex m-3 ' onSubmit={handleSubmit}>
                 <input
                     className='form-control'
                     type="text"
@@ -42,7 +42,7 @@ export default function Search() {
                     placeholder="Enter a customer's phone number"
                     required
                 />
-                <button className='btn btn-primary' type="submit">
+                <button className='btn btn-primary mx-4' type="submit">
                     Find
                 </button>
             </form>
