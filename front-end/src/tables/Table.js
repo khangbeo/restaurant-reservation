@@ -21,7 +21,11 @@ export default function Table({ table, index }) {
 
     useEffect(() => {
         const abortController = new AbortController()
-        listTables(abortController.signal).catch(setError)
+
+        function loadTables() {
+            listTables(abortController.signal).catch(setError)
+        }
+        loadTables()
         return () => abortController.abort()
     }, [])
 
@@ -32,12 +36,11 @@ export default function Table({ table, index }) {
             if (window.confirm('Is this table ready to seat new guests? This cannot be undone.')) {
                 await deleteTable(tableId)
                 history.go()
-                return await listTables(abortController.signal)
             }
         } catch (error) {
             setError(error)
         }
-
+        return () => abortController.abort()
     }
 
     const foundRes = reservations.find(res => Number(table.reservation_id) === Number(res.reservation_id))

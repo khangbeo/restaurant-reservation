@@ -115,6 +115,15 @@ export async function cancelReservation(reservationId, signal) {
   }
   return await fetchJson(url, options)
 }
+
+export async function deleteReservation(reservationId) {
+  const url = `${API_BASE_URL}/reservations/${reservationId}`
+  const options = {
+    method: 'DELETE'
+  }
+  return await fetchJson(url, options)
+}
+
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`
   return await fetchJson(url, { signal })
